@@ -1,19 +1,16 @@
 SECTION .data
-
-msg: db "Hello, World", 10
-msglen: equ $-msg
-
-global _start
+msg: db 'Hello World!',0Ah
 
 SECTION .text
+global _start
+
 _start:
-	mov eax, 4	;Sys_write call
-	mov ebx, 1	;File descriptor for stdout
-	mov ecx, msg	;offset of msg string
-	mov edx, msglen	;Length of string
+	mov edx,13	;Number of bytes to write
+	mov ecx,msg	;Move memory address into ecx register
+	mov ebx,1	;Write to stdout file
+	mov eax,4	;Invoke SYS_WRITE (kernel opcode 4)
 	int 80h
 
-	mov eax, 1
-	mov ebx, 0
+	mov ebx,0	;Return 0 status on exit
+	mov eax,1	;Invoke SYS_EXIT (kernel opcode 1)
 	int 80h
-	
