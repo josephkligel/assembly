@@ -1,3 +1,52 @@
+; ----------------------------------
+; void iprint(Integer number)
+; Integer printing function (itoa)
+iprint:
+	push eax	; All push incantations are to preserve values on the stack
+	push ecx
+	push edx
+	push esi
+	mov ecx, 0	; Counter of how many bytes we need to print
+
+divideLoop:
+	inc ecx		; Count each byte to print
+	mov edx, 0	; empty edx
+	mov esi, 10	; Move 10 into source register
+	idiv esi	; divide eax by esi
+	add edx, 48	; Convert to ascii value of integer. Edx holds remainder
+	push edx	; push string representation of integer onto stack
+	cmp eax, 0	; Can the integer be divided anymore
+	jnz divideLoop	; Jump back to the beginning of divideLoop if not zero
+
+printLoop:
+	dec ecx		; Count down each byte on the stack
+	mov eax, esp	; Move the stack pointer into eax for printing
+	call sprint	; call our string print function
+	pop eax		; Remove the character printed to move esp forward
+	cmp ecx, 0	; Have all bytes been printed from stack?
+	jnz printLoop	; Continue printing if all bytes are not printed
+	
+	pop esi		; Restore esi from the value we pushed onto the stack
+	pop edx		; Ditto
+	pop ecx		; Ditto
+	pop eax		; Ditto
+	ret
+
+; --------------------------
+; void iprintLF (int. number)
+iprintLF:
+	call iprint	; Call integer printing function
+	
+	push eax	; Preserve current value of eax while eax is used in this function
+	mov eax, 0Ah	; Put linefeed ascii character into eax
+	push eax	; Push the linefeed onto the stack to get the address
+	mov eax, esp	; Move the address of stack pointer into eax
+	call sprint	; Call string print function
+	pop eax		; Remove linefeed from stack
+	pop eax		; Restore original value to eax
+	ret
+	
+;-----------------------------
 ; int slen(String message)
 ; String length calculation function
 
