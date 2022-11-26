@@ -19,6 +19,17 @@ end:
 	int 80h
 	ret
 
+;begin %print_length %1
+;	mov edx, $-%1
+;	mov ecx, %1
+;	mov ebx, 1
+;	mov eax, 4
+;	int 80h
+
+;	mov eax, 1
+;	int 80h
+;end	
+
 pop eax
 pop ebx
 pop ecx

@@ -1,4 +1,4 @@
-%include 'string.asm'
+%include "./libraries/strlib.asm"
 SECTION .bss
 
 SECTION .data
@@ -8,8 +8,9 @@ SECTION .text
 global _start
 
 _start:
-	mov eax, msg
-	call length
-	mov eax, [ecx]
-	int 80h
+
+	print
 	
+	mov eax, 0
+	mov ebx, 1
+	int 80h
